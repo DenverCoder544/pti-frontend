@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Message, Button} from 'oskari-ui';
+import { Message, Button, Spin } from 'oskari-ui';
+import { LocaleProvider } from 'oskari-ui/util';
 import { ButtonContainer, SecondaryButton } from 'oskari-ui/components/buttons';
+import { BUNDLE } from '../constants';
 import { SourceButtons } from '../components/SourceSelect.jsx';
 import { CoordinatesTable, ResultsTable } from '../components/CoordinateTable.jsx';
 import { SrsSelect } from '../components/SrsSelect';
@@ -96,6 +98,22 @@ export const FlyoutContent = ({
             </StyledButtonContainer>
         </Content>
     );
+};
+
+export const FlyoutView = ({ state, controller }) => (
+    <LocaleProvider value={{ bundleKey: BUNDLE }}>
+        <Spin
+            spinning={state.loading}
+            size='large'
+            tip={<Progress progress={state.progress} abort={controller.abortTransform}/>}>
+            <FlyoutContent {...state} controller={controller}/>
+        </Spin>
+    </LocaleProvider>
+);
+
+FlyoutView.propTypes = {
+    state: PropTypes.object.isRequired,
+    controller: PropTypes.object.isRequired
 };
 
 FlyoutContent.propTypes = {

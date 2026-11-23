@@ -1,8 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { FlyoutContent, Progress } from './view/FlyoutContent';
-import { LocaleProvider, ThemeProvider } from 'oskari-ui/util';
-import { Spin } from 'oskari-ui';
+import { FlyoutView } from './view/FlyoutContent';
+import { ThemeProvider } from 'oskari-ui/util';
 import { ViewHandler } from './handler/ViewHandler';
 import { BUNDLE } from './constants';
 
@@ -69,14 +68,9 @@ Oskari.clazz.define('Oskari.coordinatetransformation.Flyout',
             const state = handler.getState();
             const controller = handler.getController();
             const content = (
-                <LocaleProvider value={{ bundleKey: BUNDLE }}>
-                    <ThemeProvider>
-                        <Spin spinning={state.loading} size='large'
-                            tip={<Progress progress={state.progress} abort={controller.abortTransform}/>}>
-                            <FlyoutContent {...state} controller={controller}/>
-                        </Spin>
-                    </ThemeProvider>
-                </LocaleProvider>
+                <ThemeProvider>
+                    <FlyoutView state={state} controller={controller}/>
+                </ThemeProvider>
             );
             root.render(content);
         }
